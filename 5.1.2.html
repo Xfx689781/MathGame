@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abel&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abel&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Jersey+25&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0; /* Default background color */
+            font-size: 24px;
+        }
+        .correct {
+            border: 8px solid green;
+        }
+        .incorrect {
+            border: 8px solid red;
+        }
+        #exitButton {
+            position: absolute;
+            padding: 10px 20px;
+            top: 10px;
+            left: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            background-color: #307dcf;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #submitButton{
+            
+            padding: 6px px;
+            font-size: 24px;
+            background-color: #2a05ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            transition: background-color 0.3s ease;
+        }
+        #answer {
+        font-size: 24px;
+        font-family: 'Times New Roman', Times, serif;
+        color: #1100ff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+       }
+        #pauseButton {
+            position: absolute;
+            padding: 10px 20px;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            background-color: #1b8f17;
+            color: #fff;
+            font-family: 'Times New Roman', Times, serif;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #exitButton:hover {
+            background-color: #0056b3;
+        }
+        .level2 {
+            background-color: lightblue; /* Background color for level 2 and level 3 */
+        }
+        .level3 {
+            background-color: rgb(0, 0, 0); /* Background color for level 2 and level 3 */
+            color: white;
+        }
+        .level4 {
+            background-color: rgb(243, 152, 152); /* Background color for level 2 and level 3 */
+            color: rgb(59, 2, 2);
+            font-family:"playfair display";
+        }
+        .level5 {
+            background-color: rgb(97, 202, 243); /* Background color for level 2 and level 3 */
+            color: rgb(131, 26, 26);
+            font-family:"abel";
+        }
+        .level6 {
+            background-color: rgb(0, 0, 0); /* Background color for level 2 and level 3 */
+            color: rgba(255, 255, 255, 0.74);
+        }
+        .level7 {
+            background-color: rgb(131, 218, 105); /* Background color for level 2 and level 3 */
+            color: rgba(16, 105, 71, 0.74);
+        }
+        .level8 {
+            background-color: rgb(194, 169, 241); /* Background color for level 2 and level 3 */
+            color: rgba(141, 122, 13, 0.74);
+            font-size: 24px;
+            font-family: "jersey 25";
+        }
+        .level9 {
+            background-color: rgb(0, 0, 0); /* Background color for level 2 and level 3 */
+            color: rgba(255, 0, 0, 0.74);
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .level10 {
+            background-image: url('123.jpg');
+            color:#fff;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+        }
+        #nextLevelButton {
+            font-size: 24px;
+        font-family: 'Times New Roman', Times, serif;
+        background-color: #00806f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+        h4 {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Math Game</h1>
+<h2>Level <span id="level" class="level1">1</span></h2>
+<p>Answer the following questions!!!</p>
+<div id="question"></div>
+<br>
+<input type="text" id="answer" placeholder="Your answer">
+<button onclick="checkAnswer()" id="submitButton">Submit</button>
+<button onclick="togglePause()" id="pauseButton">Pause</button>
+<button id="exitButton" onclick="goToFirstPage()">Exit</button>
+<button id="button9" onclick="level10()">level 10</button>
+<h4><span id="correct">0</span><span id="totalQuestions">20</span></h4>
+<p hidden> Correct Rate: <span id="rate">0%</span></p>
+<p id="timer">Time left: 120 seconds</p>
+
+<div id="nextLevelButtonContainer" style="display: none;">
+    <h3><br>Congratulations! You complete level <span id="completedLevel">1</span></h3>
+    <h3 hidden>Level Correct: <span id="correct">0</span> / <span id="tq">0</span></h3>
+    <h3>Total Correct: <span id="tcorrect">0</span> / <span id="aq">0</span></h3>
+    <h3> Total Correct Rate: <span id="completedRate">0%</span></p>
+    <h3 hidden>Correct Rate: <span id="completedRate">0%</span></h3><br>
+    <h2>Score: <span id="scores"></span></h2><br>
+    <p><script>console.log("You gained "+score+" points in this level!");</script></p>
+    <button onclick="nextLevel()" id="nextLevelButton">Next</button>
+</div>
+
+<script>
+    let correctCount = 0;
+    let questionCount = 0;
+    let accumulatedQuestion = 20;
+    let totalCorrectCount = 0; // Total correct count across all levels
+    let totalQuestions = 20;
+    let timeLeft = 120;
+    let timerInterval;
+    let isPaused = false;
+    let level = 1;
+    let accumulatedScore = 0; // Accumulated score across all levels
+    function level10(){
+          level = 10;
+    }
+    function goToFirstPage() {
+        window.location.href = 'Xfx.html';
+    }
+    function generateQuestion() {
+        let num1, num2, operator, question;
+        if (level === 1) {
+            num1 = Math.floor(Math.random() * 10);
+            num2 = Math.floor(Math.random() * 10);
+            operator = '+';
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 2) {
+            num1 = Math.floor(Math.random() * 100) + 0;
+            num2 = Math.floor(Math.random() * 100) + 0;
+            operator = Math.random() < 0.5 ? '+' : '-';
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 3) {
+            num1 = Math.floor(Math.random() * 1000) + 0;
+            num2 = 0;
+            const operators = ['+', '-', '*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 4) {
+            num1 = Math.floor(Math.random() * 1000) + 0;
+            num2 = Math.floor(Math.random() * 1000) + 0;
+            operator = Math.random() < 0.5 ? '+' : '-';
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 5) {
+            num1 = Math.floor(Math.random() * 1000) + 0;
+            num2 = Math.floor(Math.random() * 100) + 0;
+            operator = Math.random() < 0.5 ? '+' : '-';
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 6) {
+            num1 = Math.floor(Math.random() * 0) + 0;
+            num2 = Math.floor(Math.random() * 0) + 0;
+            const operators = ['+', '-', '*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 7) {
+            num1 = Math.floor(Math.random() * 100) + 0;
+            const operators = ['*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num1} ${operator} ${num1} (The square of ${num1})`;
+        } else if (level === 8) {
+            num1 = Math.floor(Math.random() * 100) + 0;
+            num2 = Math.floor(Math.random() * 10) + 0;
+            const operators = ['*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num1} ${operator} ${num2}`;
+        } else if (level === 9) {
+            num3 = Math.floor(Math.random()*10)+1;
+            num1 = Math.floor(Math.random() * 100) + 0;
+            num2 = Math.floor(Math.random() * 100) + 0;
+            num5 = Math.floor(Math.random() * 1000) + 0;
+            num6 = Math.floor(Math.random() * 1000) + 0;
+            num3=parseInt(num3);
+            if(num3%3==0) {
+            const operators = ['*'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num1} ${operator} ${num2}`;
+            }
+            if(num3%3==1) {
+            operators = ['+', '-'];
+            operator = operators[Math.floor(Math.random() * operators.length)];
+            question = `${num5} ${operator} ${num6}`;
+            }
+
+           if(num3%3==2){
+             question = `${num1} * ${num6}`;
+           }
+       
+         }
+        
+       return question;
+    }
+    function calculateSum(num1, num2) {
+            var sum = 0;
+            for (var i = num1; i <= num2; i++) {
+                sum += i;
+            }
+            return sum;
+        }
+    
+    function displayQuestion() {
+        const questionDiv = document.getElementById('question');
+        questionDiv.textContent = generateQuestion();
+        document.getElementById('answer').value = ''; // Clear input field
+    }
+
+    function pauseGame() {
+        isPaused = true;
+        document.getElementById('pauseButton').textContent = 'Resume';
+        document.getElementById('answer').disabled = true;
+        document.querySelector('button').disabled = true;
+    }
+    function gcdFunction (a,b){
+            let smaller = Math.min(num1, num2);
+            let correctAnswer = 1;
+ 
+    for (let i = 1; i <= smaller; i++) {
+        if (a % i === 0 && b % i === 0) {
+            correctAnswer = i;
+        }
+    }
+ 
+    return correctAnswer;
+}
+function lcmFunction (number1, number2){
+    let hcf;
+
+// looping from 1 to number1 and number2 to find HCF
+for (let i = 1; i <= number1 && i <= number2; i++) {
+
+    // check if is factor of both integers
+    if( number1 % i == 0 && number2 % i == 0) {
+        hcf = i;
+    }
+}
+
+// find LCM
+let lcm = (number1 * number2) / hcf;
+
+}
+    function checkAnswer() {
+        if (isPaused) return;
+        const answer = parseFloat(document.getElementById('answer').value);
+        const questionDiv = document.getElementById('question');
+        const [num1, operator, num2] = questionDiv.textContent.split(' ');
+        let correctAnswer;
+        if (level==1) {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } 
+        else if (level==2){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } 
+        }
+        else if (level==3){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } else if (operator === '*') {
+            correctAnswer = parseFloat(num1) * parseFloat(num2);
+        }
+        }
+        else if (level==4){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } 
+        }
+        else if (level==5){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } 
+        }
+        else if (level==6){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num1) + parseFloat(num2);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } else if (operator === '*') {
+            correctAnswer = parseFloat(num1) * parseFloat(num2);
+        }
+        }
+        else if (level==7){
+        
+            correctAnswer = parseFloat(num1) * parseFloat(num1);
+        
+        }
+        else if (level==8){
+        
+        correctAnswer = parseFloat(num1) * parseFloat(num2);
+    
+        }
+        else if (level==9){
+            if(num3%3==0){
+            correctAnswer = parseFloat(num1) * parseFloat(num2);
+        }
+        if(num3%3==1){
+            if (operator=='+') {
+            correctAnswer = parseFloat(num5) + parseFloat(num6);
+        } else if (operator === '-') {
+            correctAnswer = parseFloat(num5) - parseFloat(num6);
+        } 
+        }
+        if(num3%3==2){
+            correctAnswer=num1*num6;
+        }
+
+    }
+
+
+        else if (operator === '-') {
+            correctAnswer = parseFloat(num1) - parseFloat(num2);
+        } else if (operator === '*') {
+            correctAnswer = parseFloat(num1) * parseFloat(num2);
+        }
+        else if (operator === 'sqrt') {
+        correctAnswer = Math.sqrt(num1);
+    } else if (operator === 'sin') {
+        correctAnswer = Math.sin(num1); // Convert degrees to radians
+    } else if (operator === 'cos') {        
+        correctAnswer = Math.cos(num1); // Convert degrees to radians
+    } else if (operator === 'tan') {
+        correctAnswer = Math.tan(num1); // Convert degrees to radians
+    } else 
+        {
+        correctAnswer = eval(question); // Evaluate the expression
+    }
+    
+
+        if (!isNaN(answer)) {
+            questionCount++;
+
+            if (answer === correctAnswer) {
+                correctCount++;
+                totalCorrectCount++;
+            }
+            if (answer === correctAnswer) {
+                questionDiv.classList.add('correct'); // Add 'correct' class to indicate correct answer
+                questionDiv.classList.remove('incorrect'); // Remove 'incorrect' class if present
+            } else {
+                questionDiv.classList.add('incorrect'); // Add 'incorrect' class to indicate incorrect answer
+                questionDiv.classList.remove('correct'); // Remove 'incorrect' class if present
+            }
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById("tcorrect").textContent = totalCorrectCount;
+            document.getElementById("tq").textContent = totalQuestions;
+            document.getElementById("aq").textContent = accumulatedQuestion;
+            document.getElementById('rate').textContent = `${((totalCorrectCount / totalQuestions) * 100).toFixed(1)}%`;
+            if (questionCount < accumulatedQuestion) {
+                displayQuestion();
+            } else {
+                if ((level === 1) && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    const score = Math.round((correctCount / totalQuestions) * 200 + timeLeft + level*10 + correctCount*8);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } else if (level === 2 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    const score = Math.round(((correctCount / totalQuestions)) * 200 + timeLeft + level*10 + correctCount*8);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText =  accumulatedScore;
+                    pauseGame();
+                }  else if (level === 3 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    const score = Math.round((correctCount / totalQuestions) * 200 + timeLeft + level*30 + correctCount*8);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                }  else if (level === 4 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    const score = Math.round((correctCount / totalQuestions) * 500 + timeLeft + level*10);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                }  else if (level === 5 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    const score = Math.round((correctCount / totalQuestions) * 500 + timeLeft + level*10);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                }  else if (level === 6 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    const score = Math.round((correctCount / totalQuestions) * 200 + timeLeft*100 + level*30 + correctCount*16);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } else if (level === 7 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                   
+                    const score = Math.round((correctCount/totalQuestions-0.7)*1500 + timeLeft*10 + level*10);
+                    
+                    // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } else if (level === 8 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    
+                    const score = Math.round((correctCount/totalQuestions-0.7)*1500 + timeLeft*5 + level*10);
+                    
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } else if (level === 9 && totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    const score = Math.round(timeLeft + level*100 + correctCount*40);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } if(totalCorrectCount / (accumulatedQuestion) < 0.8) {
+                    clearInterval(timerInterval);
+                    document.getElementById('question').innerText = accumulatedScore;
+                    document.getElementById('answer').style.display = 'none';
+                    document.querySelector('button').style.display = 'none';
+                    document.getElementById('scores').innerText = accumulatedScore;
+                }
+            }  
+            } else {
+                alert('Please enter a valid number.');
+            }
+        }
+        
+
+      
+        
+    
+
+   
+
+    function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (!isPaused) {
+        if (timeLeft > 0) {
+        timeLeft--;
+        document.getElementById('timer').textContent = `Time left: ${timeLeft} seconds`;
+      }
+          if (timeLeft===0) {
+          clearInterval(timerInterval);
+        
+          if(totalCorrectCount/ (accumulatedQuestion) >= 0.8){
+          
+            pauseGame();
+           if (level==1||level==2){
+          const score = Math.round((correctCount / totalQuestions) * 200 + level * 10 + correctCount*8);
+            accumulatedScore += score;
+
+// Display the score on the page
+document.getElementById('scores').innerText = "Score: " + accumulatedScore;
+
+       }
+             
+       else if (level == 7||level == 8){
+      
+                  
+                    const score = Math.round((correctCount/totalQuestions-0.7)*1500 + level*10);
+                    
+
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+       }
+     
+       else if (level ==4 || level == 5){
+        const score = Math.round((correctCount / totalQuestions) * 500  + level*10);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+       }
+       else if (level==3){
+         const score = Math.round((correctCount / totalQuestions) * 200 + level * 30 + correctCount*8);
+          accumulatedScore += score;
+
+// Display the score on the page
+document.getElementById('scores').innerText = "Score: " + accumulatedScore;
+
+       }
+        else if (level==6){
+            const score = Math.round((correctCount / totalQuestions) * 200 + level*30 + correctCount*16);
+           accumulatedScore += score;
+
+//Display the score on the page
+document.getElementById('scores').innerText =  accumulatedScore;
+
+        }
+        else if (level==9){
+            const score = Math.round(level*100 + correctCount*40);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+
+        }
+           
+       
+      document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+     document.getElementById('completedLevel').textContent = level;
+        document.getElementById('nextLevelButtonContainer').style.display = 'block';
+       questionCount = accumulatedQuestion;
+        checkAnswer(); // Check answer when time is over
+
+          }
+          if (totalCorrectCount / (accumulatedQuestion) < 0.8) {
+            //document.getElementById('scores').innerText = accumulatedScore;
+           document.getElementById('question').innerText = accumulatedScore;
+           document.getElementById('answer').style.display = 'none';
+           document.querySelector('button').style.display = 'none';
+         
+           checkAnswer(); // Check answer when time is over  
+        }
+
+    }
+     }
+      
+    }, 1000);
+
+  }
+    function togglePause() {
+        isPaused = !isPaused;
+        const pauseButton = document.getElementById('pauseButton');
+        if (isPaused) {
+            pauseButton.textContent = 'Resume';
+            document.getElementById('answer').disabled = true;
+            document.querySelector('button').disabled = true;
+        } else {
+            pauseButton.textContent = 'Pause';
+            document.getElementById('answer').disabled = false;
+            document.querySelector('button').disabled = false;
+        }
+    }
+
+    function nextLevel() {
+        togglePause();
+
+    if (level === 1) {
+        level = 2;
+        totalQuestions = 22;
+        timeLeft = 120;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 2) {
+        level = 3;
+        totalQuestions = 40;
+        timeLeft = 45;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 3) {
+        level = 4;
+        totalQuestions = Math.floor(Math.random() * 12) + 12;
+        timeLeft = 160;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 4) {
+        level = 5;
+        totalQuestions = Math.floor(Math.random() * 16) + 18;
+        timeLeft = 160;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 5) {
+        level = 6;
+        totalQuestions = Math.floor(Math.random() * 22) + 42;
+        timeLeft = 9;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 6) {
+        level = 7;
+        totalQuestions = Math.floor(Math.random() * 10) + 20;
+        timeLeft = 105;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 7) {
+        level = 8;
+        totalQuestions = Math.floor(Math.random() * 10) + 35;
+        timeLeft = 135;
+        accumulatedQuestion += totalQuestions;
+    } else if (level === 8) {
+        level = 9;
+        totalQuestions = Math.floor(Math.random() * 10) + 40;
+        timeLeft = 100;
+        accumulatedQuestion += totalQuestions;
+    }
+    
+    
+    correctCount = 0;
+    totalQuestion = 0;
+
+    document.getElementById('level').textContent = level;
+    document.getElementById('level').classList.remove(`level${level - 1}`); // Remove previous level class
+    document.getElementById('timer').textContent = `Time left: ${timeLeft} seconds`;
+    startTimer();
+    document.body.classList.add(`level${level}`); // Change background color for the new level
+    document.getElementById('nextLevelButtonContainer').style.display = 'none';
+    displayQuestion();
+}
+
+    window.onload = function() {
+      displayQuestion();
+        startTimer();
+
+        // Add event listener for "Enter" key
+        document.getElementById('answer').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    };
+</script>
+</body>
+</html>

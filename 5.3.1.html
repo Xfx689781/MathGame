@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abel&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abel&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abel&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Jersey+25&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Game</title>
+    <style>
+        body {
+        .correct {
+            border: 8px solid green;
+        }
+        .incorrect {
+            border: 8px solid red;
+        }
+        #exitButton {
+            position: absolute;
+            padding: 10px 20px;
+            top: 10px;
+            left: 10px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 24px;
+            background-color: #307dcf;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #submitButton{
+            
+            padding: 6px px;
+            font-size: 24px;
+            background-color: #2a05ff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            transition: background-color 0.3s ease;
+        }
+        #answer {
+        font-size: 24px;
+        font-family: 'Times New Roman', Times, serif;
+        color: #1100ff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+       }
+        #pauseButton {
+            position: absolute;
+            padding: 10px 20px;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            background-color: #1b8f17;
+            color: #fff;
+            font-family: 'Times New Roman', Times, serif;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #exitButton:hover {
+            background-color: #0056b3;
+        }
+        
+        .level10 {
+            background-image: url('123.jpg');
+            color:#fff;
+            font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+        }
+        #nextLevelButton {
+            font-size: 24px;
+        font-family: 'Times New Roman', Times, serif;
+        background-color: #00806f;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+        h4 {
+            opacity: 0;
+        }
+    }
+    </style>
+</head>
+<body>
+<h1>Math Game</h1>
+<h2>Level <span id="level" class="level1">10</span></h2>
+<p>Answer the following questions!!!</p>
+<div id="question"></div>
+<br>
+<input type="text" id="answer" placeholder="Your answer">
+<button onclick="checkAnswer()" id="submitButton">Submit</button>
+<button onclick="togglePause()" id="pauseButton">Pause</button>
+<button id="exitButton" onclick="goToFirstPage()">Exit</button>
+<button id="button9" onclick="level10()">level 10</button>
+<h4><span id="correct">0</span><span id="totalQuestions">20</span></h4>
+<p hidden> Correct Rate: <span id="rate">0%</span></p>
+<p id="timer">Time left: 120 seconds</p>
+
+<div id="nextLevelButtonContainer" style="display: none;">
+    <h3><br>Congratulations! You complete level <span id="completedLevel">1</span></h3>
+    <h3 hidden>Level Correct: <span id="correct">0</span> / <span id="tq">0</span></h3>
+    <h3>Total Correct: <span id="tcorrect">0</span> / <span id="aq">0</span></h3>
+    <h3> Total Correct Rate: <span id="completedRate">0%</span></p>
+    <h3 hidden>Correct Rate: <span id="completedRate">0%</span></h3><br>
+    <h2>Score: <span id="scores"></span></h2><br>
+    <p><script>console.log("You gained "+score+" points in this level!");</script></p>
+    <button onclick="nextLevel()" id="nextLevelButton">Next</button>
+</div>
+
+<script>
+    let correctCount = 0;
+    let questionCount = 0;
+    let accumulatedQuestion = 20;
+    let totalCorrectCount = 0; // Total correct count across all levels
+    let totalQuestions = 20;
+    let timeLeft = 120;
+    let timerInterval;
+    let isPaused = false;
+    let level = 1;
+    let accumulatedScore = 0; // Accumulated score across all levels
+    function level10(){
+          level = 10;
+    }
+    function goToFirstPage() {
+        window.location.href = 'Xfx.html';
+    }
+    function generateQuestion() {
+        var num1 = getRandomNumber(1, 1000);
+        var num2 = getRandomNumber(1, 100);
+        var gcdValue = gcd(num1, num2);
+        document.getElementById('question').innerHTML = `What is the GCD of ${num1} and ${num2}?`;
+        return gcdValue;
+  }
+  function checkAnswer1 (){
+    var userAnswer = parseInt(document.getElementById('answer').value);
+    var correctAnswer = generateQuestion(); // Generate the question and get the correct answer
+    if (userAnswer === correctAnswer) {
+      score++;
+    }
+}
+    function calculateSum(num1, num2) {
+            var sum = 0;
+            for (var i = num1; i <= num2; i++) {
+                sum += i;
+            }
+            return sum;
+        }
+    
+        function displayQuestion() {
+        const questionDiv = document.getElementById('question');
+        questionDiv.textContent = generateQuestion();
+        document.getElementById('answer').value = ''; // Clear input field
+    }
+
+    function pauseGame() {
+        isPaused = true;
+        document.getElementById('pauseButton').textContent = 'Resume';
+        document.getElementById('answer').disabled = true;
+        document.querySelector('button').disabled = true;
+    }
+    function gcd (a,b){
+            let smaller = Math.min(num1, num2);
+            let correctAnswer = 1;
+ 
+    for (let i = 1; i <= smaller; i++) {
+        if (a % i === 0 && b % i === 0) {
+            correctAnswer = i;
+        }
+    }
+ 
+    return correctAnswer;
+}
+
+        if (!isNaN(answer)) {
+            questionCount++;
+
+            if (answer === correctAnswer) {
+                correctCount++;
+                totalCorrectCount++;
+            }
+            if (answer === correctAnswer) {
+                questionDiv.classList.add('correct'); // Add 'correct' class to indicate correct answer
+                questionDiv.classList.remove('incorrect'); // Remove 'incorrect' class if present
+            } else {
+                questionDiv.classList.add('incorrect'); // Add 'incorrect' class to indicate incorrect answer
+                questionDiv.classList.remove('correct'); // Remove 'incorrect' class if present
+            }
+            document.getElementById('correct').textContent = correctCount;
+            document.getElementById("tcorrect").textContent = totalCorrectCount;
+            document.getElementById("tq").textContent = totalQuestions;
+            document.getElementById("aq").textContent = accumulatedQuestion;
+            document.getElementById('rate').textContent = `${((totalCorrectCount / totalQuestions) * 100).toFixed(1)}%`;
+            if (questionCount < accumulatedQuestion) {
+                displayQuestion();
+            } else {
+
+                if (totalCorrectCount / (accumulatedQuestion) >= 0.8) {
+                    document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+                    document.getElementById('completedLevel').textContent = level;
+                    document.getElementById('nextLevelButtonContainer').style.display = 'block';
+                    clearInterval(timerInterval);
+                    const score = Math.round(timeLeft + level*100 + correctCount*40);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+                    pauseGame();
+                } if(totalCorrectCount / (accumulatedQuestion) < 0.8) {
+                    clearInterval(timerInterval);
+                    document.getElementById('question').innerText = accumulatedScore;
+                    document.getElementById('answer').style.display = 'none';
+                    document.querySelector('button').style.display = 'none';
+                    document.getElementById('scores').innerText = accumulatedScore;
+                }
+            }  
+            } else {
+                alert('Please enter a valid number.');
+            }
+        
+        
+
+      
+        
+    
+
+   
+
+    function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (!isPaused) {
+        if (timeLeft > 0) {
+        timeLeft--;
+        document.getElementById('timer').textContent = `Time left: ${timeLeft} seconds`;
+      }
+          if (timeLeft===0) {
+          clearInterval(timerInterval);
+        
+          if(totalCorrectCount/ (accumulatedQuestion) >= 0.8){
+          
+            pauseGame();
+       
+         if (level==9){
+            const score = Math.round(level*100 + correctCount*40);
+                         // Update the accumulated score
+                    accumulatedScore += score;
+
+                         // Display the score on the page
+                    document.getElementById('scores').innerText = accumulatedScore;
+
+        }
+           
+       
+      document.getElementById('completedRate').textContent = `${((totalCorrectCount / (accumulatedQuestion)) * 100).toFixed(2)}%`;
+     document.getElementById('completedLevel').textContent = level;
+        document.getElementById('nextLevelButtonContainer').style.display = 'block';
+       questionCount = accumulatedQuestion;
+        checkAnswer(); // Check answer when time is over
+
+          }
+          if (totalCorrectCount / (accumulatedQuestion) < 0.8) {
+            //document.getElementById('scores').innerText = accumulatedScore;
+           document.getElementById('question').innerText = accumulatedScore;
+           document.getElementById('answer').style.display = 'none';
+           document.querySelector('button').style.display = 'none';
+         
+           checkAnswer(); // Check answer when time is over  
+        }
+
+    }
+     }
+      
+    }, 1000);
+
+  }
+    function togglePause() {
+        isPaused = !isPaused;
+        const pauseButton = document.getElementById('pauseButton');
+        if (isPaused) {
+            pauseButton.textContent = 'Resume';
+            document.getElementById('answer').disabled = true;
+            document.querySelector('button').disabled = true;
+        } else {
+            pauseButton.textContent = 'Pause';
+            document.getElementById('answer').disabled = false;
+            document.querySelector('button').disabled = false;
+        }
+    }
+
+    function nextLevel() {
+        togglePause();
+        level = 11;
+        totalQuestions = Math.floor(Math.random() * 10) + 40;
+        timeLeft = 100;
+        accumulatedQuestion += totalQuestions;
+    
+    
+    
+    correctCount = 0;
+    totalQuestion = 0;
+
+    document.getElementById('level').textContent = level;
+    document.getElementById('level').classList.remove(`level${level - 1}`); // Remove previous level class
+    document.getElementById('timer').textContent = `Time left: ${timeLeft} seconds`;
+    startTimer();
+    document.body.classList.add(`level${level}`); // Change background color for the new level
+    document.getElementById('nextLevelButtonContainer').style.display = 'none';
+    displayQuestion();
+}
+
+    window.onload = function() {
+      displayQuestion();
+        startTimer();
+
+        // Add event listener for "Enter" key
+        document.getElementById('answer').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    };
+    generateQuestion();
+</script>
+</body>
+</html>
